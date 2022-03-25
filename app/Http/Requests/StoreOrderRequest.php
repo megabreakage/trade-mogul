@@ -13,7 +13,7 @@ class StoreOrderRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,18 @@ class StoreOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'order_number' => ['required', 'string'],
+            'location' => ['required', 'string'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'order_number.required' => 'Order number is required',
+            'order_number.string' => 'Order number does not allow special characters',
+            'location.required' => 'Location is required',
+            'location.string' => 'Kindly select a location from the list provided.'
         ];
     }
 }

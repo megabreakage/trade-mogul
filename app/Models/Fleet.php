@@ -10,6 +10,6 @@ class Fleet extends Model
     use HasFactory;
 
     protected $fillable = [
-        'identifier', 'fleet_status_id', 'registration_number',
+        'identifier', 'fleet_status_id', 'registration_number', 'model', 'year_of_manufacture',
     ];
 }
