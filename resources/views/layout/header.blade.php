@@ -29,7 +29,7 @@
                         Orders
                     </a>
 
-                    <a class="nav-link" href="#!">
+                    <a class="nav-link" href="{{ route('fleet') }}">
                         <div class="nav-link-icon"><i class="fa-solid fa-truck"></i></div>
                         Fleet
                     </a>
