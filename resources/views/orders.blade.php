@@ -31,12 +31,10 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Aircaft reg</th>
-                                <th>Engine model</th>
-                                <th>Serial number</th>
-                                <th class="text-center">Position</th>
-                                <th class="text-right">Cycles</th>
-                                <th class="text-right">Hours</th>
+                                <th>Order Number</th>
+                                <th>Order Status</th>
+                                <th>Destination</th>
+                                <th class="text-center">Created date</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -44,17 +42,15 @@
                             @php
                                 $i = 1;
                             @endphp
-                            @forelse ($engines as $engine)
+                            @forelse ($orders as $order)
                                 <tr>
                                     <td>{{ $i }}</td>
-                                    <td>{{ $engine->aircraft->aircraft_registration }}</td>
-                                    <td>{{ $engine->engine_model->model }}</td>
-                                    <td>{{  $engine->serial_number }}</td>
-                                    <td class="text-center">{{ $engine->position }}</td>
-                                    <td class="text-right">{{ $engine->cycles }}</td>
-                                    <td class="text-right">{{ number_format((float)$engine->hours, 2, '.', '') }}</td>
-                                    <td>
-                                        <a href=""></a>
+                                    <td>{{ $order->order_number }}</td>
+                                    <td>{{ $order->order_status_id }}</td>
+                                    <td>{{ $order->destination_id }}</td>
+                                    <td class="text-center">{{ $order->created_at }}</td>
+                                    <td class="text-center"> 
+                                        <span class="action-icon" title="Assign Truck"><i class="fa-solid fa-truck"></i></span>
                                     </td>
                                 </tr>
                             @php
@@ -62,7 +58,7 @@
                             @endphp
                             @empty
                                 <tr class="text-center">
-                                    No engine records found. Add engines to view details.
+                                    No orders found. Add orders to view details.
                                 </tr>
                             @endforelse
                             

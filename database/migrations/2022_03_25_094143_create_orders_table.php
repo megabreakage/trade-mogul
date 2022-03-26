@@ -16,8 +16,10 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->uuid('identifier');
-            $table->string('order_number');
             $table->foreignId('order_status_id')->references('id')->on('order_statuses')->onDelete('restrict');
+            $table->foreignId('location_id')->references('id')->on('locations')->onDelete('restrict');
+            $table->foreignId('destination_id')->references('id')->on('locations')->onDelete('restrict');
+            $table->string('order_number');
             $table->timestamps();
         });
     }

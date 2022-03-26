@@ -10,6 +10,6 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = [
-        'identifier', 'order_status_id', 'location_id', 'order_number'
+        'identifier', 'order_status_id', 'location_id', 'destination_id', 'order_number'
     ];
 }

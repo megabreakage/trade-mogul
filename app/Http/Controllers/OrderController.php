@@ -7,7 +7,6 @@ use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Location;
 use App\Models\Order;
-use App\Models\OrderStatus;
 use Exception;
 use Illuminate\Support\Str;
 
