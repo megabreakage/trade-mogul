@@ -29,7 +29,22 @@ export default function useCompanies() {
     }
 
     const editTruck = async(id) => {
+        errors.value = ''
+        try {
+            
+        } catch (e) {
+            
+        }
 
+    }
+
+    const assignTruck = async(data) => {
+        errors.value = ''
+        try {
+            
+        } catch (e) {
+            
+        }
     }
 
     const destroyTruck = async(id) => {
@@ -46,6 +61,7 @@ export default function useCompanies() {
         getFleet,
         saveTruck,
         editTruck,
+        destroyTruck,
 
     }
 
