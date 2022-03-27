@@ -40,6 +40,8 @@
         <script src="{{ asset('vendor/assets/demo/chart-pie-demo.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
         <script src="{{ asset('vendor/js/datatables/datatables-simple-demo.js') }}"></script>
+
+        <script src="{{ asset('js/app.js') }}"></script>
         <script src="{{ asset('js/js.js') }}"></script>
 
         @yield('scripts')

@@ -15,4 +15,4 @@ createApp({
         FleetList,
         OrdersList,
     }
-}).use(router).mount('#app');
+}).use(router).mount('#app')

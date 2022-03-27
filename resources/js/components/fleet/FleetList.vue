@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid">
+        <div class="container-fluid">
             <div class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
                 <div class="container-xl px-4">
                     <div class="page-header-content pt-4">
@@ -43,16 +43,7 @@
                         </table>
 
                         <div class="col-md-12">
-                            @if($errors->any())
-                                <div class="alert alert-danger">
-                                    <p><strong>Opps Something went wrong</strong></p>
-                                    <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                    </ul>
-                                </div>
-                            @endif
+
                         </div>
                     </div>
                 </div>
