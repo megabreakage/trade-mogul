@@ -70,8 +70,10 @@
                 <h6 class="dropdown-header d-flex align-items-center">
                     <img class="dropdown-user-img" src="{{ asset('vendor/assets') }}/img/illustrations/profiles/profile-1.png" />
                     <div class="dropdown-user-details">
-                        <div class="dropdown-user-details-name">{{ auth()->user()->firstname.' '.auth()->user()->lastname }}</div>
-                        <div class="dropdown-user-details-email">{{ auth()->user()->email }}</div>
+                        {{-- <div class="dropdown-user-details-name">{{ auth()->user()->firstname.' '.auth()->user()->lastname }}</div>
+                        <div class="dropdown-user-details-email">{{ auth()->user()->email }}</div> --}}
+                        <div class="dropdown-user-details-name">Martin Njuguna</div>
+                        <div class="dropdown-user-details-email">martin.njau@live.com</div>
                     </div>
                 </h6>
                 <div class="dropdown-divider"></div>

@@ -132,7 +132,8 @@
                                                 <td>01/12/20</td>
                                                 <td>
                                                     <i class="me-2 text-blue" data-feather="user"></i>
-                                                    {{ auth()->user()->name }} submitted
+                                                    {{-- {{ auth()->user()->name }} submitted --}}
+                                                    Martin Njuguna submitted
                                                     <a href="#!">quarter four report</a>
                                                 </td>
                                                 <td>4:23 PM</td>
@@ -294,7 +295,8 @@
                                             </div>
                                             <div class="timeline-item-content">
                                                 New user
-                                                <a class="fw-bold text-dark" href="#!">{{ auth()->user()->name }}</a>
+                                                {{-- <a class="fw-bold text-dark" href="#!">{{ auth()->user()->name }}</a> --}}
+                                                <a class="fw-bold text-dark" href="#!">Martin Njuguna</a>
                                                 has registered
                                             </div>
                                         </div>

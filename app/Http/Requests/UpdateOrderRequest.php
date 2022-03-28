@@ -24,7 +24,21 @@ class UpdateOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'order_number' => ['required', 'string'],
+            'location' => ['required', 'string'],
+            'order_status' => ['required', 'string'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'order_number.required' => 'Order number is required',
+            'order_number.string' => 'Order number does not allow special characters',
+            'location.required' => 'Location is required',
+            'location.string' => 'Kindly select a location from the list provided.',
+            'order_status.required' => 'Order status is required',
+            'order_status.string' => 'Kindly select order status from the list provided.'
         ];
     }
 }

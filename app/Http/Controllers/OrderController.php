@@ -4,82 +4,58 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Http\Resources\OrderResource;
+use App\Models\Location;
 use App\Models\Order;
+use Exception;
+use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        //
+        $this->data['orders'] = Order::get();
+        return view('orders', $this->data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreOrderRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StoreOrderRequest $request)
     {
-        //
+        $validated = $request->safe()->all();
+        $location = Location::where('identifier', $validated['location'])->first();
+
+        try {
+            $truck = Order::create([
+                'identifier' => Str::uuid(),
+                'order_status_id' => 1,
+                'location_id' => $location->id,
+                'registration_number' => $validated['registration_number'],
+                'model' => $validated['model'],
+                'year_of_manufacture' => $validated['year_of_manufacture'],
+            ]);
+            return new OrderResource($truck);
+        } catch (Exception $e) {
+            return new OrderResource(['status' => 'error', 'message' => 'Order has not been added succesfully, Kindly try again.', 'errors' => $e->getMessage()]);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Order $order)
+    public function show($id)
+    {
+        $order = Order::where('identifier', $id)->first();
+        return OrderResource::collection($order);
+    }
+
+    public function edit($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Order $order)
+    public function update(UpdateOrderRequest $request, $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateOrderRequest  $request
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateOrderRequest $request, Order $order)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Order $order)
+    public function destroy($id)
     {
         //
     }

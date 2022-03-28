@@ -24,12 +24,12 @@
                         Dashboard
                     </a>
 
-                    <a class="nav-link" href="#!">
+                    <a class="nav-link" href="{{ route('orders') }}">
                         <div class="nav-link-icon"><i class="fa-regular fa-clipboard"></i></div>
                         Orders
                     </a>
 
-                    <a class="nav-link" href="#!">
+                    <a class="nav-link" href="{{ route('fleet') }}">
                         <div class="nav-link-icon"><i class="fa-solid fa-truck"></i></div>
                         Fleet
                     </a>
@@ -40,7 +40,8 @@
             <div class="sidenav-footer">
                 <div class="sidenav-footer-content">
                     <div class="sidenav-footer-subtitle">Logged in as:</div>
-                    <div class="sidenav-footer-title">{{ auth()->user()->firstname.' '.auth()->user()->lastname }}</div>
+                    {{-- <div class="sidenav-footer-title">{{ auth()->user()->firstname.' '.auth()->user()->lastname }}</div> --}}
+                    <div class="sidenav-footer-title">Martin Njuguna</div>
                 </div>
             </div>
         </nav>

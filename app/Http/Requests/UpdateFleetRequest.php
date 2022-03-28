@@ -13,7 +13,7 @@ class UpdateFleetRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,24 @@ class UpdateFleetRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'registration_number' => ['required', 'string'],
+            'model' => ['required', 'string'],
+            'year_of_manufacture' => ['required', 'date'],
+            'availability_status' => ['required', 'string']
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'registration_number.required' => 'Registration number of the truck is required',
+            'registration_number.string' => 'Registration number does not allow special characters',
+            'model.required' => 'Truck model is required',
+            'model.string' => 'Model number does not allow special characters',
+            'year_of_manufacture.required' => 'Year of manufactured is required',
+            'year_of_manufacture.date' => 'Year of manufacture is expected as a date.',
+            'availability_status.required' => 'Availability status  is required',
+            'availability_status.date' => 'Please select availability status from the list provided.',
         ];
     }
 }
