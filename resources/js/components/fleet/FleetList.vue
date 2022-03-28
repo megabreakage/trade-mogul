@@ -23,22 +23,30 @@
                 <div class="card mb-4">
                     <div class="card-header">Fleet</div>
                     <div class="card-body">
-                        <table id="datatablesSimple">
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>Reg Number</th>
                                     <th>Status</th>
-                                    <th>Destination</th>
+                                    <th>Model</th>
                                     <th class="text-center">Created date</th>
                                     <th class="text-center">Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <template >
-                                    
+                            <tbody v-if="fleet">
+                                <template v-for="(truck, index) in fleet" :key="truck.id">
+                                    <tr>
+                                        <td>{{ index + 1 }}</td>
+                                        <td>{{ truck.registration_number }}</td>
+                                        <td>{{ truck.fleet_status.name }}</td>
+                                        <td>{{ truck.model }}</td>
+                                        <td class="text-center">{{ truck.manufactured_at }}</td>
+                                        <td class="text-center"> 
+                                            <span class="action-icon" title="Assign Truck">Assign order <i class="fa-regular fa-clipboard"></i></span>
+                                        </td>
+                                    </tr>
                                 </template>
-
                             </tbody>
                         </table>
 
@@ -50,3 +58,26 @@
             </div>
         </div>
 </template>
+
+<script>
+import { ref, reactive, onMounted } from "vue";
+import useFleet from '../../composables/fleet';
+
+export default {
+
+    setup() {
+
+        const { fleet, getFleet, getTruck } = useFleet();
+
+        onMounted(getFleet);
+
+        return {
+            fleet,
+            getFleet,
+            getTruck
+
+        }
+        
+    },
+}
+</script>

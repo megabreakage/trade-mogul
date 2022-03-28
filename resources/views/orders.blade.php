@@ -47,11 +47,11 @@
                                     <tr>
                                         <td>{{ $i }}</td>
                                         <td>{{ $order->order_number }}</td>
-                                        <td>{{ $order->order_status_id }}</td>
-                                        <td>{{ $order->destination_id }}</td>
+                                        <td>{{ $order->order_status->name }}</td>
+                                        <td>{{ $order->location->name }}</td>
                                         <td class="text-center">{{ $order->created_at }}</td>
                                         <td class="text-center"> 
-                                            <span class="action-icon" title="Assign Truck"><i class="fa-solid fa-truck"></i></span>
+                                            <span class="action-icon" title="Assign Truck">Assign <i class="fa-solid fa-truck"></i></span>
                                         </td>
                                     </tr>
                                 @php

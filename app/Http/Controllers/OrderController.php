@@ -15,7 +15,8 @@ class OrderController extends Controller
 
     public function index()
     {
-        $this->data['orders'] = Order::get();
+        $this->data['orders'] = Order::with(['order_status', 'location'])->get();
+        // return Order::with(['order_status', 'location'])->get();
         return view('orders', $this->data);
     }
 
@@ -31,7 +32,7 @@ class OrderController extends Controller
                 'location_id' => $location->id,
                 'registration_number' => $validated['registration_number'],
                 'model' => $validated['model'],
-                'year_of_manufacture' => $validated['year_of_manufacture'],
+                'manufactured_at' => $validated['manufactured_at'],
             ]);
             return new OrderResource($truck);
         } catch (Exception $e) {
