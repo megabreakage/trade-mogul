@@ -26,7 +26,7 @@ class StoreFleetRequest extends FormRequest
         return [
             'registration_number' => ['required', 'string'],
             'model' => ['required', 'string'],
-            'year_of_manufacture' => ['required', 'date'],
+            'manufactured_at' => ['required', 'date'],
         ];
     }
 
@@ -37,8 +37,8 @@ class StoreFleetRequest extends FormRequest
             'registration_number.string' => 'Registration number does not allow special characters',
             'model.required' => 'Truck model is required',
             'model.string' => 'Model number does not allow special characters',
-            'year_of_manufacture.required' => 'Year of manufactured is required',
-            'year_of_manufacture.date' => 'Year of manufacture is expected as a date.',
+            'manufactured_at.required' => 'Year of manufactured is required',
+            'manufactured_at.date' => 'Manufacture date is expected as a date.',
         ];
     }
 }

@@ -10,12 +10,13 @@ export default function useCompanies() {
     const router = useRouter()
 
     const getFleet = async () => {
-        response = await axios.get(`/api/fleet`);
+        let response = await axios.get(`/api/fleet`);
         fleet.value = response.data.data;
+        // console.log(fleet.value);
     }
 
     const getTruck = async(id) => {
-        response = await axios.get(`/api/fleet/${id}`);
+        let response = await axios.get(`/api/fleet/${id}`);
         truck.value = response.data.data;
     }
 

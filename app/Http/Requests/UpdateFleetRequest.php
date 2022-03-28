@@ -26,7 +26,7 @@ class UpdateFleetRequest extends FormRequest
         return [
             'registration_number' => ['required', 'string'],
             'model' => ['required', 'string'],
-            'year_of_manufacture' => ['required', 'date'],
+            'manufactured_at' => ['required', 'date'],
             'availability_status' => ['required', 'string']
         ];
     }
@@ -38,8 +38,8 @@ class UpdateFleetRequest extends FormRequest
             'registration_number.string' => 'Registration number does not allow special characters',
             'model.required' => 'Truck model is required',
             'model.string' => 'Model number does not allow special characters',
-            'year_of_manufacture.required' => 'Year of manufactured is required',
-            'year_of_manufacture.date' => 'Year of manufacture is expected as a date.',
+            'manufactured_at.required' => 'Year of manufactured is required',
+            'manufactured_at.date' => 'Year of manufacture is expected as a date.',
             'availability_status.required' => 'Availability status  is required',
             'availability_status.date' => 'Please select availability status from the list provided.',
         ];

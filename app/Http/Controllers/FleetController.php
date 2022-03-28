@@ -11,33 +11,18 @@ use Illuminate\Support\Str;
 
 class FleetController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        $fleet = Fleet::get();
+        $fleet = Fleet::with(['fleet_status', 'location'])->get();
         return $fleet ? FleetResource::collection($fleet) : new FleetResource(['status' => 'error', 'message' => 'No records have been found']);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreFleetRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StoreFleetRequest $request)
     {
         $validated = $request->safe()->all();
@@ -48,7 +33,7 @@ class FleetController extends Controller
                 'fleet_status_id' => 1, // Available by default.
                 'registration_number' => $validated['registration_number'],
                 'model' => $validated['model'],
-                'year_of_manufacture' => $validated['year_of_manufacture']
+                'manufactured_at' => $validated['manufactured_at']
 
             ]);
             return new FleetResource($truck);
@@ -57,36 +42,17 @@ class FleetController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Fleet  $fleet
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $truck = Fleet::where('identifier', $id)->first();
         return $truck ? FleetResource::collection($truck) : new FleetResource(['status' => 'error', 'message' => 'No record has been found']);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Fleet  $fleet
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateFleetRequest  $request
-     * @param  \App\Models\Fleet  $fleet
-     * @return \Illuminate\Http\Response
-     */
     public function update(UpdateFleetRequest $request, $id)
     {
         $truck = Fleet::where('identifier', $id)->first();
@@ -97,7 +63,7 @@ class FleetController extends Controller
                     'fleet_status_id' => $validated['fleet_status_id'],
                     'registration_number' => $validated['registration_number'],
                     'model' => $validated['model'],
-                    'year_of_manufacture' => $validated['year_of_manufacture'],
+                    'manufactured_at' => $validated['manufactured_at'],
                 ]);
                 return new FleetResource($truck);
             } catch (Exception $e) {
@@ -107,12 +73,6 @@ class FleetController extends Controller
         return new FleetResource(['status' => 'error', 'message' => 'No record has been found to update']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Fleet  $fleet
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $truck = Fleet::where('identifier', $id)->first();

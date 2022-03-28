@@ -15,6 +15,11 @@ return new class extends Migration
     {
         Schema::create('fleets', function (Blueprint $table) {
             $table->id();
+            $table->uuid('identifier');
+            $table->foreignId('fleet_status_id')->references('id')->on('fleet_statuses')->onDelete('restrict');
+            $table->string('registration_number');
+            $table->string('model');
+            $table->date('manufactured_at');
             $table->timestamps();
         });
     }
