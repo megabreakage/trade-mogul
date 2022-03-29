@@ -132,7 +132,7 @@ export default {
 
         const allocateOrder = async(id) => {
             truck.value.fleet_status_id = order.value.order_status_id = 2;
-            order.value.truck_id = truck.value.truck_id; 
+            order.value.truck_id = parseInt(truck.value.id); 
 
             await updateTruck(truck.value.identifier);
             await updateOrder(order.value.identifier);

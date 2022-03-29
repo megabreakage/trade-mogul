@@ -24851,7 +24851,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context4.prev = _context4.next) {
               case 0:
                 truck.value.fleet_status_id = order.value.order_status_id = 2;
-                order.value.truck_id = truck.value.truck_id;
+                order.value.truck_id = parseInt(truck.value.id);
                 _context4.next = 4;
                 return updateTruck(truck.value.identifier);
 
