@@ -35,8 +35,10 @@ class StoreFleetRequest extends FormRequest
         return [
             'registration_number.required' => 'Registration number of the vehicle is required',
             'registration_number.string' => 'Registration number does not allow special characters',
+
             'model.required' => 'Truck model is required',
             'model.string' => 'Model number does not allow special characters',
+
             'manufactured_at.required' => 'Year of manufactured is required',
             'manufactured_at.date' => 'Manufacture date is expected as a date.',
         ];

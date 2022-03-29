@@ -13,7 +13,7 @@ class UpdateOrderRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,8 +25,9 @@ class UpdateOrderRequest extends FormRequest
     {
         return [
             'order_number' => ['required', 'string'],
-            'location' => ['required', 'string'],
-            'order_status' => ['required', 'string'],
+            'location_id' => ['required', 'numeric', 'exists:locations,id'],
+            'destination_id' => ['required', 'numeric', 'exists:locations,id'],
+            'order_status_id' => ['required', 'numeric', 'exists:order_statuses,id'],
         ];
     }
 
@@ -35,10 +36,18 @@ class UpdateOrderRequest extends FormRequest
         return [
             'order_number.required' => 'Order number is required',
             'order_number.string' => 'Order number does not allow special characters',
+
             'location.required' => 'Location is required',
             'location.string' => 'Kindly select a location from the list provided.',
-            'order_status.required' => 'Order status is required',
-            'order_status.string' => 'Kindly select order status from the list provided.'
+            'location.exists' => 'The location selected does not exist.',
+
+            'destination.required' => 'Destination is required',
+            'destination.string' => 'Kindly select a destination from the list provided.',
+            'destination.exists' => 'The destination selected does not exist.',
+
+            'order_status_id.required' => 'Order status is required',
+            'order_status_id.numeric' => 'Kindly select order status from the list provided.',
+            'order_status_id.exists' => 'The status selected does not exist.'
         ];
     }
 }

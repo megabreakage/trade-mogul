@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 
-export default function useCompanies() {
+export default function useFleet() {
     const truck = ref([])
     const fleet = ref([])
 
@@ -12,7 +12,6 @@ export default function useCompanies() {
     const getFleet = async () => {
         let response = await axios.get(`/api/fleet`);
         fleet.value = response.data.data;
-        // console.log(fleet.value);
     }
 
     const getTruck = async(id) => {
@@ -23,29 +22,30 @@ export default function useCompanies() {
     const saveTruck = async(data) => {
         errors.value = '';
         try {
-            
+            await axios.post(`/api/fleet`, data);
+            await router.push({name: 'fleet.list'});
         } catch (e) {
-            
+            if (e.response.status === 422) {
+                for (const key in e.response.data.errors) {
+                    errors.value += e.response.data.errors[key][0] + ' ';
+                }
+            }
         }
     }
 
-    const editTruck = async(id) => {
+    const updateTruck = async(id) => {
         errors.value = ''
         try {
-            
+            await axios.patch(`/api/fleet/${id}`, truck.value);
+            // await router.push({name: 'fleet.list'});
         } catch (e) {
-            
+            if (e.response.status === 422) {
+                for (const key in e.response.data.errors) {
+                    errors.value += e.response.data.errors[key][0] + ' ';
+                }
+            }
         }
 
-    }
-
-    const assignTruck = async(data) => {
-        errors.value = ''
-        try {
-            
-        } catch (e) {
-            
-        }
     }
 
     const destroyTruck = async(id) => {
@@ -61,7 +61,7 @@ export default function useCompanies() {
         getTruck,
         getFleet,
         saveTruck,
-        editTruck,
+        updateTruck,
         destroyTruck,
 
     }
