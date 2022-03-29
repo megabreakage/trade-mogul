@@ -22,7 +22,8 @@ export default function useFleet() {
     const saveTruck = async(data) => {
         errors.value = '';
         try {
-            
+            await axios.post(`/api/fleet`, data);
+            await router.push({name: 'fleet.list'});
         } catch (e) {
             if (e.response.status === 422) {
                 for (const key in e.response.data.errors) {

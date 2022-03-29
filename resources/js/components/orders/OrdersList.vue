@@ -42,8 +42,13 @@
                                         <td :class="[order.order_status_id != 4 ? 'text-warning': 'text-success' ]">{{ order.order_status.name }}</td>
                                         <td>{{ order.location.name }}</td>
                                         <td class="text-center">{{ order.created_at }}</td>
-                                        <td class="text-center"> 
-                                            <span class="action-icon" data-bs-toggle="modal" data-bs-target="#allocateTruck" title="Assign Truck" @click="fetchOrder(order.identifier)">Assign <i class="fa-solid fa-truck"></i></span>
+                                        <td class="text-center">
+                                            <div class="dropdown">
+                                                <span class="dropdown-toggle action-link" id="dropdownFadeInUp" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More</span>
+                                                <div class="dropdown-menu animated--fade-in-up px-2" aria-labelledby="dropdownFadeInUp">
+                                                    <li class="action-icon" data-bs-toggle="modal" data-bs-target="#allocateTruck" title="Assign Truck" @click="fetchOrder(order.identifier)">Assign <i class="fa-solid fa-truck"></i></li>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                 </template>
@@ -72,9 +77,8 @@
                                     <label for="truckAllocation">Select a Truck</label>
                                     <select name="truck" id="truck" class="form-control" v-model="truckId" @change="fetchTruck(truckId)">
                                         <option selected disabled> --select a truck-- </option>
-                                        <option v-for="truck in fleet" :key="truck.id" :value="truck.identifier">{{ truck.registration_number  }}</option>
+                                        <option v-for="truck in fleet" :key="truck.id" :value="truck.identifier" :disabled="truck.fleet_status_id != 1">{{ truck.registration_number  }}</option>
                                     </select>
-
                                     <input type="hidden" name="fleet_status" v-model="truck.fleet_status">
                                     <input type="hidden" name="order_status" v-model="order.order_status">
                                 </div>
@@ -130,7 +134,7 @@ export default {
             await updateOrder(order.value.identifier);
 
             $('#allocateTruck').modal('hide');
-            $('#allocateTruck').trigger("reset");
+            $('#allocateOrderForm').trigger("reset");
 
             await getOrders();
         }

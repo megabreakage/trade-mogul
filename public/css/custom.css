@@ -1,4 +1,12 @@
-.action-icon{
+.action-link{
     color: #0061F2;
     cursor: pointer;
+}
+
+.action-icon{
+    cursor: pointer;
+}
+
+.action-icon:hover{
+    color: #0061F2;
 }
