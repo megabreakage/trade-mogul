@@ -123,7 +123,7 @@
                                     <label for="truckAllocation">Select status</label>
                                     <select name="truck" id="truck" class="form-control" v-model="statusId" @change="fetchStatus(statusId)" required>
                                         <option selected="true" disabled> --select status-- </option>
-                                        <option v-for="status in statuses" :key="status.id" :value="status.identifier" :selected="true">{{ status.name }}</option>
+                                        <option v-for="status in statuses" :key="status.id" :value="status.identifier" :selected="true" :disabled="status.id == truck.fleet_status_id">{{ status.name }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -150,8 +150,9 @@
                                     <label for="truckAllocation">Select status</label>
                                     <select name="truck" id="truck" class="form-control" v-model="statusId" @change="fetchStatus(statusId)" :required="true">
                                         <option :selected="true" disabled> --select status-- </option>
-                                        <option v-for="status in statuses" :key="status.id" :value="status.identifier" :selected="status.id == truck.fleet_status_id? 'true': 'false'">{{ status.name }}</option>
+                                        <option v-for="status in statuses" :key="status.id" :value="status.identifier" :selected="status.id == truck.fleet_status_id? 'true': 'false'" :disabled="status.id == truck.fleet_status_id">{{ status.name }}</option>
                                     </select>
+                                    <!-- <p v-if="order.value.status == 'error'" class="text-danger"> Fleet status cannot change if an order has not been assigned.</p> -->
                                 </div>
                             </div>
                         </div>
@@ -168,6 +169,7 @@
 import { onMounted, reactive, ref } from "vue";
 import useFleet from '../../composables/fleet';
 import useFleetStatuses from '../../composables/fleetStatuses';
+import useOrders from '../../composables/orders';
 
 export default {
 
@@ -182,6 +184,7 @@ export default {
 
         const { fleet, getFleet, truck, getTruck, updateTruck, saveTruck, errors } = useFleet();
         const { status, statuses, getStatus, getStatuses } = useFleetStatuses();
+        const { order, getOrder, getOrderByTruck, updateOrder } = useOrders();
 
         onMounted(getFleet);
         onMounted(getStatuses);
@@ -197,6 +200,7 @@ export default {
 
         const fetchTruck = async(id) => {
             await getTruck(id);
+            await getOrderByTruck(truck.value.id);
         }
 
         const addTruck = async() => {
@@ -209,8 +213,20 @@ export default {
         }
 
         const updateTruckStatus = async(id) => {
+            let fleet_status = parseInt(truck.value.fleet_status_id);
             truck.value.fleet_status_id = status.value.id;
-            await updateTruck(id);
+            
+            if(order.value.status != 'error'){
+                if (fleet_status == 1) {
+                    order.value.order_status_id = 4;
+                } else if(fleet_status == 2) {
+                    order.value.order_status_id = 2;
+                } else if(fleet_status == 3){
+                    order.value.order_status_id = 3;
+                }
+                await updateOrder(id);
+                await updateTruck(id);
+            }
 
             $('#updateStatus, #editTruck').modal('hide');
             $('#updateStatusForm, #editTruckForm').trigger("reset");
@@ -231,6 +247,7 @@ export default {
             statuses,
             updateTruckStatus,
             statusId,
+            order,
             errors,
         }
         

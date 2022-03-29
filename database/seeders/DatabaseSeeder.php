@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             OrderStatusSeeder::class,
             FleetStatusSeeder::class,
             LocationSeeder::class,
+            FleetSeeder::class,
             OrderSeeder::class,
         ]);
     }

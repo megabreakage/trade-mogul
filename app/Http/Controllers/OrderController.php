@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Resources\OrderResource;
+use App\Models\Fleet;
 use App\Models\Location;
 use App\Models\Order;
 use App\Models\OrderStatus;
@@ -15,7 +16,7 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = Order::with(['order_status', 'location'])->get();
+        $orders = Order::with(['truck', 'order_status', 'location'])->get();
         return $orders ? OrderResource::collection($orders) :  new OrderResource([
             'status' => 'error',
             'message' => 'No records have been found'
@@ -69,6 +70,7 @@ class OrderController extends Controller
             $order_status = OrderStatus::find($validated['order_status_id']);
             $location = Location::find($validated['location_id']);
             $destination = Location::find($validated['destination_id']);
+            $truck = Fleet::find($validated['truck_id']);
 
             try {
                 $order->update([
@@ -76,6 +78,7 @@ class OrderController extends Controller
                     'order_number' => $validated['order_number'],
                     'location_id' => $location->id,
                     'destination_id' => $destination->id,
+                    'truck_id' => $truck->id,
                 ]);
                 return new OrderResource($order);
             } catch (Exception $e) {
@@ -102,6 +105,15 @@ class OrderController extends Controller
             ]);
         }
         return new OrderResource([
+            'status' => 'error',
+            'message' => 'No records have been found'
+        ]);
+    }
+
+    public function get_order_by_truck($id)
+    {
+        $order = Order::where('truck_id', $id)->first();
+        return $order ? new OrderResource($order) : new OrderResource([
             'status' => 'error',
             'message' => 'No records have been found'
         ]);

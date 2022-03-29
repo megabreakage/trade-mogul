@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('order_status_id')->references('id')->on('order_statuses')->onDelete('restrict');
             $table->foreignId('location_id')->references('id')->on('locations')->onDelete('restrict');
             $table->foreignId('destination_id')->references('id')->on('locations')->onDelete('restrict');
+            $table->foreignId('truck_id')->nullable()->references('id')->on('fleets')->onDelete('restrict');
             $table->string('order_number');
             $table->timestamps();
         });

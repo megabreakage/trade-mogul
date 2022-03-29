@@ -28,6 +28,7 @@ class UpdateOrderRequest extends FormRequest
             'location_id' => ['required', 'numeric', 'exists:locations,id'],
             'destination_id' => ['required', 'numeric', 'exists:locations,id'],
             'order_status_id' => ['required', 'numeric', 'exists:order_statuses,id'],
+            'truck_id' => ['required', 'numeric', 'exists:fleets,id'],
         ];
     }
 

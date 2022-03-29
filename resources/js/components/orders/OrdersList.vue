@@ -30,6 +30,7 @@
                                     <th>Order Number</th>
                                     <th>Order Status</th>
                                     <th>Destination</th>
+                                    <th>Truck</th>
                                     <th class="text-center">Created date</th>
                                     <th class="text-center">Action</th>
                                 </tr>
@@ -41,6 +42,8 @@
                                         <td>{{ order.order_number }}</td>
                                         <td :class="[order.order_status_id != 4 ? 'text-warning': 'text-success' ]">{{ order.order_status.name }}</td>
                                         <td>{{ order.location.name }}</td>
+                                        <td v-if="order.truck" class="text-success">{{ order.truck.registration_number }}</td>
+                                        <td v-else class="text-danger">None</td>
                                         <td class="text-center">{{ order.created_at }}</td>
                                         <td class="text-center">
                                             <div class="dropdown">
@@ -77,7 +80,7 @@
                                     <label for="truckAllocation">Select a Truck</label>
                                     <select name="truck" id="truck" class="form-control" v-model="truckId" @change="fetchTruck(truckId)">
                                         <option selected disabled> --select a truck-- </option>
-                                        <option v-for="truck in fleet" :key="truck.id" :value="truck.identifier" :disabled="truck.fleet_status_id != 1">{{ truck.registration_number  }}</option>
+                                        <option v-for="truck in fleet" :key="truck.id" :value="truck.identifier" :disabled="truck.fleet_status_id != 1">{{ truck.registration_number }}</option>
                                     </select>
                                     <input type="hidden" name="fleet_status" v-model="truck.fleet_status">
                                     <input type="hidden" name="order_status" v-model="order.order_status">
@@ -129,6 +132,7 @@ export default {
 
         const allocateOrder = async(id) => {
             truck.value.fleet_status_id = order.value.order_status_id = 2;
+            order.value.truck_id = parseInt(truck.value.id); 
 
             await updateTruck(truck.value.identifier);
             await updateOrder(order.value.identifier);

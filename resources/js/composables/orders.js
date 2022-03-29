@@ -19,6 +19,11 @@ export default function useOrders() {
         order.value = response.data.data;
     }
 
+    const getOrderByTruck = async(id) => {
+        let response = await axios.get(`/api/order-by-truck/${id}`);
+        order.value = response.data.data;
+    }
+
     const saveOrder = async(data) => {
         errors.value = '';
         try {
@@ -37,7 +42,7 @@ export default function useOrders() {
         errors.value = ''
         try {
             await axios.patch(`/api/orders/${id}`, order.value);
-            await router.push({name: 'orders.list'})
+            // await router.push({name: 'orders.list'})
         } catch (e) {
             if (e.response.status === 422) {
                 for (const key in e.response.data.errors) {
@@ -77,7 +82,7 @@ export default function useOrders() {
         updateOrder,
         dispatchOrder,
         destroyOrder,
-
+        getOrderByTruck,
     }
 
 }

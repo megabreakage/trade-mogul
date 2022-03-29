@@ -13,3 +13,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::resource('/fleet', FleetController::class);
 Route::resource('/orders', OrderController::class);
 Route::resource('/fleet-status', FleetStatusController::class)->except('store', 'destroy', 'store');
+
+Route::get('/order-by-truck/{id}', [OrderController::class, 'get_order_by_truck']);

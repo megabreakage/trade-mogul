@@ -15,7 +15,7 @@ class OrderSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 1; $i < 5; $i++) {
+        for ($i = 1; $i < 10; $i++) {
             Order::create([
                 'identifier' => generate_identifier(),
                 'order_number' => 'TM-' . rand(0001, 9999),
