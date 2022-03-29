@@ -1,22 +1,15 @@
 <?php
 
 use App\Http\Controllers\FleetController;
+use App\Http\Controllers\FleetStatusController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 Route::resource('/fleet', FleetController::class);
+Route::resource('/orders', OrderController::class);
+Route::resource('/fleet-status', FleetStatusController::class)->except('store', 'destroy', 'store');
