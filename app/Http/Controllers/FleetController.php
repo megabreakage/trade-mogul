@@ -37,7 +37,6 @@ class FleetController extends Controller
                 'registration_number' => $validated['registration_number'],
                 'model' => $validated['model'],
                 'manufactured_at' => $validated['manufactured_at']
-
             ]);
             return new FleetResource($truck);
         } catch (Exception $e) {
