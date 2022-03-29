@@ -27,7 +27,7 @@ class UpdateFleetRequest extends FormRequest
             'registration_number' => ['required', 'string'],
             'model' => ['required', 'string'],
             'manufactured_at' => ['required', 'date'],
-            'availability_status' => ['required', 'string']
+            'fleet_status_id' => ['required', 'numeric', 'exists:fleet_statuses,id']
         ];
     }
 
@@ -36,12 +36,16 @@ class UpdateFleetRequest extends FormRequest
         return [
             'registration_number.required' => 'Registration number of the truck is required',
             'registration_number.string' => 'Registration number does not allow special characters',
+
             'model.required' => 'Truck model is required',
             'model.string' => 'Model number does not allow special characters',
+
             'manufactured_at.required' => 'Year of manufactured is required',
             'manufactured_at.date' => 'Year of manufacture is expected as a date.',
-            'availability_status.required' => 'Availability status  is required',
-            'availability_status.date' => 'Please select availability status from the list provided.',
+
+            'fleet_status_id.required' => 'Truck status  is required',
+            'fleet_status_id.numeric' => 'Please select the truck status from the list provided.',
+            'fleet_status_id.exists' => 'The status selected does not exist.'
         ];
     }
 }

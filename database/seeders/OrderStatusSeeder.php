@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\OrderStatus;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class OrderStatusSeeder extends Seeder
 {
@@ -20,7 +19,7 @@ class OrderStatusSeeder extends Seeder
 
         foreach ($statuses as $status) {
             OrderStatus::create([
-                'identifier' => Str::uuid(),
+                'identifier' => generate_identifier(),
                 'name' => $status
             ]);
         }

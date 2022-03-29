@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\FleetStatus;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class FleetStatusSeeder extends Seeder
 {
@@ -20,7 +19,7 @@ class FleetStatusSeeder extends Seeder
 
         foreach ($statuses as $status) {
             FleetStatus::create([
-                'identifier' => Str::uuid(),
+                'identifier' => generate_identifier(),
                 'name' => $status
             ]);
         }

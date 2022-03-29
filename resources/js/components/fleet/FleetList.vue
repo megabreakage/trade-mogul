@@ -39,11 +39,11 @@
                                     <tr>
                                         <td>{{ index + 1 }}</td>
                                         <td>{{ truck.registration_number }}</td>
-                                        <td>{{ truck.fleet_status.name }}</td>
+                                        <td :class="truck.fleet_status_id == 1 ? 'text-success': 'text-primary'">{{ truck.fleet_status.name }}</td>
                                         <td>{{ truck.model }}</td>
                                         <td class="text-center">{{ truck.manufactured_at }}</td>
                                         <td class="text-center"> 
-                                            <span class="action-icon" title="Assign Truck">Assign order <i class="fa-regular fa-clipboard"></i></span>
+                                            <span class="action-icon" title="Update Truck Status" data-bs-toggle="modal" data-bs-target="#updateStatus" @click="fetchTruck(truck.identifier)"><i class="fa-regular fa-clipboard"></i> Update Status </span>
                                         </td>
                                     </tr>
                                 </template>
@@ -57,25 +57,96 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="updateStatus" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <form id="allocateOrderForm" @submit.prevent="updateTruckStatus(truck.identifier)">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">Update Truck status</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-md-12 p-4">
+                                <div class="">
+                                    <label for="truckAllocation">Select status</label>
+                                    <select name="truck" id="truck" class="form-control" v-model="statusId" @change="fetchStatus(statusId)">
+                                        <option selected disabled> --select status-- </option>
+                                        <option v-for="status in statuses" :key="status.id" :value="status.identifier">{{ status.name }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" type="submit">Update Truck Status</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 </template>
 
 <script>
-import { ref, reactive, onMounted } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import useFleet from '../../composables/fleet';
+import useFleetStatuses from '../../composables/fleetStatuses';
 
 export default {
 
     setup() {
+        const form = reactive({
+            registration_number: '',
+            location: '',
+            model: '',
+            manufactured_at: ''
+        })
 
-        const { fleet, getFleet, getTruck } = useFleet();
+        const statusId = ref('')
+
+        const { fleet, getFleet, truck, getTruck, updateTruck, errors } = useFleet();
+        const { status, statuses, getStatus, getStatuses } = useFleetStatuses();
 
         onMounted(getFleet);
+        onMounted(getStatuses);
+
+        const editOrder = async (id) => {
+            await updateTruck(id);
+            await getFleet();
+        }
+
+        const fetchStatus = async(id) => {
+            await getStatus(id);
+        }
+
+        const fetchTruck = async(id) => {
+            await getTruck(id);
+        }
+
+        const updateTruckStatus = async(id) => {
+            truck.value.fleet_status_id = status.value.id;
+            console.log(truck.value);
+            await updateTruck(id);
+
+            $('#updateStatus').modal('hide');
+            $('#updateStatus').trigger("reset");
+
+            await getFleet();
+        }
 
         return {
+            form,
             fleet,
+            truck,
             getFleet,
-            getTruck
-
+            editOrder,
+            fetchStatus,
+            fetchTruck,
+            status,
+            statuses,
+            updateTruckStatus,
+            statusId,
+            errors,
         }
         
     },

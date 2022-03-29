@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Location;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class LocationSeeder extends Seeder
 {
@@ -20,7 +19,7 @@ class LocationSeeder extends Seeder
 
         foreach ($locations as $location) {
             Location::create([
-                'identifier' => Str::uuid(),
+                'identifier' => generate_identifier(),
                 'name' => $location
             ]);
         }
