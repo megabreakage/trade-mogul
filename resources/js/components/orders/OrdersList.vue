@@ -42,7 +42,8 @@
                                         <td>{{ order.order_number }}</td>
                                         <td :class="[order.order_status_id != 4 ? 'text-warning': 'text-success' ]">{{ order.order_status.name }}</td>
                                         <td>{{ order.location.name }}</td>
-                                        <td>{{ order.truck.registration_number }}</td>
+                                        <td v-if="order.truck" class="text-success">{{ order.truck.registration_number }}</td>
+                                        <td v-else class="text-danger">None</td>
                                         <td class="text-center">{{ order.created_at }}</td>
                                         <td class="text-center">
                                             <div class="dropdown">
