@@ -109,4 +109,13 @@ class OrderController extends Controller
             'message' => 'No records have been found'
         ]);
     }
+
+    public function get_order_by_truck($id)
+    {
+        $order = Order::where('truck_id', $id)->first();
+        return $order ? new OrderResource($order) : new OrderResource([
+            'status' => 'error',
+            'message' => 'No records have been found'
+        ]);
+    }
 }

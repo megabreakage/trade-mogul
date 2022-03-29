@@ -24531,6 +24531,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 /* harmony import */ var _composables_fleet__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../composables/fleet */ "./resources/js/composables/fleet.js");
 /* harmony import */ var _composables_fleetStatuses__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../composables/fleetStatuses */ "./resources/js/composables/fleetStatuses.js");
+/* harmony import */ var _composables_orders__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../composables/orders */ "./resources/js/composables/orders.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -24542,6 +24543,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 
@@ -24569,6 +24571,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         statuses = _useFleetStatuses.statuses,
         getStatus = _useFleetStatuses.getStatus,
         getStatuses = _useFleetStatuses.getStatuses;
+
+    var _useOrders = (0,_composables_orders__WEBPACK_IMPORTED_MODULE_4__["default"])(),
+        order = _useOrders.order,
+        getOrder = _useOrders.getOrder,
+        getOrderByTruck = _useOrders.getOrderByTruck,
+        updateOrder = _useOrders.updateOrder;
 
     (0,vue__WEBPACK_IMPORTED_MODULE_1__.onMounted)(getFleet);
     (0,vue__WEBPACK_IMPORTED_MODULE_1__.onMounted)(getStatuses);
@@ -24631,6 +24639,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return getTruck(id);
 
               case 2:
+                _context3.next = 4;
+                return getOrderByTruck(truck.value.id);
+
+              case 4:
               case "end":
                 return _context3.stop();
             }
@@ -24673,21 +24685,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
     var updateTruckStatus = /*#__PURE__*/function () {
       var _ref5 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5(id) {
+        var fleet_status;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
+                fleet_status = parseInt(truck.value.fleet_status_id);
                 truck.value.fleet_status_id = status.value.id;
-                _context5.next = 3;
+
+                if (!(order.value.status != 'error')) {
+                  _context5.next = 8;
+                  break;
+                }
+
+                if (fleet_status == 1) {
+                  order.value.order_status_id = 4;
+                } else if (fleet_status == 2) {
+                  order.value.order_status_id = 2;
+                } else if (fleet_status == 3) {
+                  order.value.order_status_id = 3;
+                }
+
+                _context5.next = 6;
+                return updateOrder(id);
+
+              case 6:
+                _context5.next = 8;
                 return updateTruck(id);
 
-              case 3:
+              case 8:
                 $('#updateStatus, #editTruck').modal('hide');
                 $('#updateStatusForm, #editTruckForm').trigger("reset");
-                _context5.next = 7;
+                _context5.next = 12;
                 return getFleet();
 
-              case 7:
+              case 12:
               case "end":
                 return _context5.stop();
             }
@@ -24713,6 +24745,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       statuses: statuses,
       updateTruckStatus: updateTruckStatus,
       statusId: statusId,
+      order: order,
       errors: errors
     };
   }
@@ -25162,7 +25195,7 @@ var _hoisted_51 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_52 = ["value"];
+var _hoisted_52 = ["value", "disabled"];
 
 var _hoisted_53 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "modal-footer"
@@ -25227,7 +25260,7 @@ var _hoisted_62 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_63 = ["value", "selected"];
+var _hoisted_63 = ["value", "selected", "disabled"];
 
 var _hoisted_64 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "modal-footer"
@@ -25370,7 +25403,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
       key: status.id,
       value: status.identifier,
-      selected: true
+      selected: true,
+      disabled: status.id == $setup.truck.fleet_status_id
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(status.name), 9
     /* TEXT, PROPS */
     , _hoisted_52);
@@ -25400,7 +25434,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
       key: status.id,
       value: status.identifier,
-      selected: status.id == $setup.truck.fleet_status_id ? 'true' : 'false'
+      selected: status.id == $setup.truck.fleet_status_id ? 'true' : 'false',
+      disabled: status.id == $setup.truck.fleet_status_id
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(status.name), 9
     /* TEXT, PROPS */
     , _hoisted_63);
@@ -25408,7 +25443,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* KEYED_FRAGMENT */
   ))], 544
   /* HYDRATE_EVENTS, NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $setup.statusId]])])])]), _hoisted_64], 32
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $setup.statusId]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <p v-if=\"order.value.status == 'error'\" class=\"text-danger\"> Fleet status cannot change if an order has not been assigned.</p> ")])])]), _hoisted_64], 32
   /* HYDRATE_EVENTS */
   )])])])], 64
   /* STABLE_FRAGMENT */
@@ -26131,53 +26166,35 @@ function useOrders() {
     };
   }();
 
-  var saveOrder = /*#__PURE__*/function () {
-    var _ref3 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3(data) {
-      var key;
+  var getOrderByTruck = /*#__PURE__*/function () {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3(id) {
+      var response;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              errors.value = '';
-              _context3.prev = 1;
-              _context3.next = 4;
-              return axios__WEBPACK_IMPORTED_MODULE_2___default().post("/api/orders", data);
+              _context3.next = 2;
+              return axios__WEBPACK_IMPORTED_MODULE_2___default().get("/api/order-by-truck/".concat(id));
+
+            case 2:
+              response = _context3.sent;
+              order.value = response.data.data;
 
             case 4:
-              _context3.next = 6;
-              return router.push({
-                name: 'orders.list'
-              });
-
-            case 6:
-              _context3.next = 11;
-              break;
-
-            case 8:
-              _context3.prev = 8;
-              _context3.t0 = _context3["catch"](1);
-
-              if (_context3.t0.response.status === 422) {
-                for (key in _context3.t0.response.data.errors) {
-                  errors.value += _context3.t0.response.data.errors[key][0] + ' ';
-                }
-              }
-
-            case 11:
             case "end":
               return _context3.stop();
           }
         }
-      }, _callee3, null, [[1, 8]]);
+      }, _callee3);
     }));
 
-    return function saveOrder(_x2) {
+    return function getOrderByTruck(_x2) {
       return _ref3.apply(this, arguments);
     };
   }();
 
-  var updateOrder = /*#__PURE__*/function () {
-    var _ref4 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4(id) {
+  var saveOrder = /*#__PURE__*/function () {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4(data) {
       var key;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
         while (1) {
@@ -26186,7 +26203,7 @@ function useOrders() {
               errors.value = '';
               _context4.prev = 1;
               _context4.next = 4;
-              return axios__WEBPACK_IMPORTED_MODULE_2___default().patch("/api/orders/".concat(id), order.value);
+              return axios__WEBPACK_IMPORTED_MODULE_2___default().post("/api/orders", data);
 
             case 4:
               _context4.next = 6;
@@ -26216,17 +26233,56 @@ function useOrders() {
       }, _callee4, null, [[1, 8]]);
     }));
 
-    return function updateOrder(_x3) {
+    return function saveOrder(_x3) {
       return _ref4.apply(this, arguments);
     };
   }();
 
-  var dispatchOrder = /*#__PURE__*/function () {
-    var _ref5 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5(data) {
+  var updateOrder = /*#__PURE__*/function () {
+    var _ref5 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5(id) {
       var key;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
         while (1) {
           switch (_context5.prev = _context5.next) {
+            case 0:
+              errors.value = '';
+              _context5.prev = 1;
+              _context5.next = 4;
+              return axios__WEBPACK_IMPORTED_MODULE_2___default().patch("/api/orders/".concat(id), order.value);
+
+            case 4:
+              _context5.next = 9;
+              break;
+
+            case 6:
+              _context5.prev = 6;
+              _context5.t0 = _context5["catch"](1);
+
+              if (_context5.t0.response.status === 422) {
+                for (key in _context5.t0.response.data.errors) {
+                  errors.value += _context5.t0.response.data.errors[key][0] + ' ';
+                }
+              }
+
+            case 9:
+            case "end":
+              return _context5.stop();
+          }
+        }
+      }, _callee5, null, [[1, 6]]);
+    }));
+
+    return function updateOrder(_x4) {
+      return _ref5.apply(this, arguments);
+    };
+  }();
+
+  var dispatchOrder = /*#__PURE__*/function () {
+    var _ref6 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee6(data) {
+      var key;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee6$(_context6) {
+        while (1) {
+          switch (_context6.prev = _context6.next) {
             case 0:
               errors.value = '';
 
@@ -26240,40 +26296,40 @@ function useOrders() {
 
             case 2:
             case "end":
-              return _context5.stop();
-          }
-        }
-      }, _callee5);
-    }));
-
-    return function dispatchOrder(_x4) {
-      return _ref5.apply(this, arguments);
-    };
-  }();
-
-  var destroyOrder = /*#__PURE__*/function () {
-    var _ref6 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee6(id) {
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee6$(_context6) {
-        while (1) {
-          switch (_context6.prev = _context6.next) {
-            case 0:
-              _context6.next = 2;
-              return axios__WEBPACK_IMPORTED_MODULE_2___default()["delete"]("/api/orders/".concat(id));
-
-            case 2:
-              _context6.next = 4;
-              return router.push('orders.list');
-
-            case 4:
-            case "end":
               return _context6.stop();
           }
         }
       }, _callee6);
     }));
 
-    return function destroyOrder(_x5) {
+    return function dispatchOrder(_x5) {
       return _ref6.apply(this, arguments);
+    };
+  }();
+
+  var destroyOrder = /*#__PURE__*/function () {
+    var _ref7 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee7(id) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee7$(_context7) {
+        while (1) {
+          switch (_context7.prev = _context7.next) {
+            case 0:
+              _context7.next = 2;
+              return axios__WEBPACK_IMPORTED_MODULE_2___default()["delete"]("/api/orders/".concat(id));
+
+            case 2:
+              _context7.next = 4;
+              return router.push('orders.list');
+
+            case 4:
+            case "end":
+              return _context7.stop();
+          }
+        }
+      }, _callee7);
+    }));
+
+    return function destroyOrder(_x6) {
+      return _ref7.apply(this, arguments);
     };
   }();
 
@@ -26286,7 +26342,8 @@ function useOrders() {
     saveOrder: saveOrder,
     updateOrder: updateOrder,
     dispatchOrder: dispatchOrder,
-    destroyOrder: destroyOrder
+    destroyOrder: destroyOrder,
+    getOrderByTruck: getOrderByTruck
   };
 }
 
